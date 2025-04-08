@@ -2,6 +2,8 @@ use rlua::{Lua, Value};
 use std::fs;
 use std::io;
 use std::io::prelude::*;
+
+use std::process;
 fn image_exists(img: &str) -> bool {
     let image_path = format!("web/images/{}", img);
     if std::path::Path::new(&image_path).exists() {
@@ -72,6 +74,7 @@ fn parse_lua_from_file(file_path: &str) -> rlua::Result<()> {
 
     // Read a single byte and discard
     let _ = stdin.read(&mut [0u8]).unwrap();
+    process::exit(0);
     Ok(())
 }
 
@@ -86,7 +89,16 @@ fn main() {
     println!("-----------------------------------------------------");
     if !std::path::Path::new(items_path).exists() && !std::path::Path::new(images_path).exists() {
         println!("This program must be run in the root of the ox_inventory folder");
-        return;
+        let mut stdin = io::stdin();
+        let mut stdout = io::stdout();
+
+        // We want the cursor to stay at the end of the line, so we print without a newline and flush manually.
+        write!(stdout, "Press any key to continue...").unwrap();
+        stdout.flush().unwrap();
+
+        // Read a single byte and discard
+        let _ = stdin.read(&mut [0u8]).unwrap();
+        process::exit(0);
     }
     if let Err(e) = parse_lua_from_file(items_path) {
         eprintln!("Error parsing Lua: {}", e);
