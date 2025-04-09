@@ -8,6 +8,10 @@ Simply place the exe into the root of your ox_inventory folder and run the exe.
 
 It will print out all missing images. This works for both client.image specified names as well as root names as well.
 
+### Known Bug
+
+If you use the backtick key ( ` ) in any item it will break replace it with single or double quotes
+
 ## License
 
 [GNU GPLv3 ](https://choosealicense.com/licenses/gpl-3.0/)
